@@ -12,8 +12,6 @@ subreddit_map = {
     'show me a funny': 'funny'
 }
 
-
-
 @slack.RTMClient.run_on(event='message')
 def say_hello(**payload):
     print(payload)
