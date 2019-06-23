@@ -25,7 +25,7 @@ def say_hello(**payload):
         if trigger_text is not None:
             submitted_command = trigger_text.group(1)
             print(whitelisted_subreddits)
-            if submitted_command in whitelisted_subreddits:
+            if submitted_command is not None and submitted_command in whitelisted_subreddits:
                 link = get_from_reddit(submitted_command)
 
                 if link is not None:
