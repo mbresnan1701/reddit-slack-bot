@@ -1,5 +1,4 @@
 import requests
-import re
 import random
 
 
@@ -10,7 +9,7 @@ def get_from_reddit(subreddit):
     if res.status_code == 200:
         picked_link = filter_usable_links(res.json())
 
-        if(picked_link):
+        if picked_link:
             return picked_link
         else:
             return "PICK FAILURE"
@@ -26,26 +25,20 @@ def filter_usable_links(response_json):
 
     random_post = random.choice(posts)
 
-    url = random_post.get('data').get('preview').get('images')[0].get('source').get('url')
+    url = random_post.get('data').get('url')
 
     if url is not None:
-        return replace_preview(url)
+        return random_post.get('data').get('title') + ' ' + url
     else:
         return None
 
 
 def image_filter(post):
-    if post.get('data') and post.get('data').get('preview'):
-        source_url = post.get('data').get('preview').get('images')[0].get('source').get('url')
-        if '//preview.redd.it' in source_url:
+    if post.get('data') and post.get('data').get('url'):
+        if 'www.reddit.com' not in post.get('data').get('url') and 'v.reddit.com' not in post.get('data').get('url'):
+            if post.get('data').get('over_18') is not False:
+                return False
+
             return True
-        else:
-            return False
+
     return False
-
-
-def replace_preview(url):
-    regex_search = "preview.redd.it"
-    regex_replace = "i.redd.it"
-
-    return re.sub(regex_search, regex_replace, url)

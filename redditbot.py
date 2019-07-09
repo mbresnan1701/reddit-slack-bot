@@ -8,9 +8,10 @@ api_token = os.environ['SLACK_BOT_TOKEN']
 client = slack.WebClient(token=api_token)
 rtm_client = slack.RTMClient(token=api_token)
 
-whitelisted_subreddits = { 'prequelmemes', 'aww' }
+whitelisted_subreddits = {'aww', 'rarepuppers', 'cats', 'Art', 'CrappyDesign', 'HistoryPorn', 'EarthPorn'}
 
-help_message = 'Hi User. Currently available subreddits are: ' + str(whitelisted_subreddits)
+help_message = 'Hi User. Currently available subreddits are: ' + str(whitelisted_subreddits) + \
+               '. SFW subreddit suggestions welcome.'
 
 @slack.RTMClient.run_on(event='message')
 def say_hello(**payload):
@@ -26,10 +27,10 @@ def say_hello(**payload):
             submitted_command = trigger_text.group(1)
             print(whitelisted_subreddits)
             if submitted_command is not None and submitted_command in whitelisted_subreddits:
-                link = get_from_reddit(submitted_command)
+                message = get_from_reddit(submitted_command)
 
-                if link is not None:
-                    web_client.chat_postMessage(channel=channel_id, text=link)
+                if message is not None:
+                    web_client.chat_postMessage(channel=channel_id, text=message)
 
             elif submitted_command == "help":
                 web_client.chat_postMessage(channel=channel_id, text=help_message)
