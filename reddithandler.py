@@ -3,7 +3,7 @@ import random
 
 
 def get_from_reddit(subreddit):
-    link = 'https://www.reddit.com/r/' + subreddit + '/top/.json?sort=top&t=day&limit=50'
+    link = 'https://www.reddit.com/r/' + subreddit + '/.json?sort=top&t=day&limit=50'
     res = requests.get(link, headers={'User-agent': 'the senate 0.1'})
 
     if res.status_code == 200:
